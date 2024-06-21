@@ -1,0 +1,25 @@
+{
+    "name": "lbt-smart-contracts",
+    "version": "1.0.0",
+    "description": "This project demonstrates a basic Hardhat use case. It comes with a sample contract, a test for that contract, and a Hardhat Ignition module that deploys that contract.",
+    "main": "hardhat.config.js",
+    "directories": {
+        "test": "test"
+    },
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "devDependencies": {
+        "@nomicfoundation/hardhat-ethers": "^3.0.6",
+        "@nomicfoundation/hardhat-verify": "^2.0.8",
+        "@openzeppelin/hardhat-upgrades": "^3.1.1",
+        "chai": "^5.1.1",
+        "ethers": "^6.13.0"
+    },
+    "dependencies": {
+        "dotenv": "^16.4.5"
+    }
+}
