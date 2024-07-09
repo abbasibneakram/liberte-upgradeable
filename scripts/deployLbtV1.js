@@ -7,7 +7,7 @@ async function main() {
     const liberteTechTokenTest = await upgrades.deployProxy(
         LiberteTechTokenTest,
         {
-            initializer: 'initialize',
+            initializer: 'constructor',
         }
     )
     console.log(

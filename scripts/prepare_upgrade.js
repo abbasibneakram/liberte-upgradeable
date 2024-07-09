@@ -10,7 +10,15 @@ async function main() {
         proxyAddress,
         LiberteTechTokenTestV2
     )
-    console.log('LiberteTechTokenTestV2 at:', liberteTechTokenTestV2Address)
+
+    console.log(
+        'LiberteTechTokenTestV2 Deployed at:',
+        liberteTechTokenTestV2Address
+    )
+
+    console.log('Upgrading LiberteTechToken Proxy...')
+    await upgrades.upgradeProxy(proxyAddress, LiberteTechTokenTestV2)
+    console.log('LiberteTechToken has been upgraded')
 }
 
 main()
