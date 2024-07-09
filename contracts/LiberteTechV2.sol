@@ -467,11 +467,6 @@ contract LiberteTechTokenTestV2 is
     ERC20Upgradeable,
     OwnableUpgradeable
 {
-    // function initialize() public initializer {
-    //     __ERC20_init("LiberteTechTokenTest", "LBTV1TEST");
-    //     __Ownable_init(_msgSender());
-    // }
-
     function mint(uint256 _amount) public onlyOwner {
         _mint(_msgSender(), _amount * 10 ** decimals());
     }
