@@ -293,7 +293,11 @@ abstract contract ERC20Upgradeable is
         return true;
     }
 
-    function _transfer(address from, address to, uint256 value) internal {
+    function _transfer(
+        address from,
+        address to,
+        uint256 value
+    ) internal virtual {
         if (from == address(0)) {
             revert ERC20InvalidSender(address(0));
         }
@@ -462,17 +466,44 @@ abstract contract OwnableUpgradeable is Initializable, ContextUpgradeable {
     }
 }
 
-contract LiberteTechTokenTest is
-    Initializable,
-    ERC20Upgradeable,
-    OwnableUpgradeable
-{
+contract LiberteCoin is Initializable, ERC20Upgradeable, OwnableUpgradeable {
+    mapping(address => bool) private _whitelistedAddresses;
+
+    event WhitelistedAddressAdded(address indexed account);
+    event WhitelistedAddressRemoved(address indexed account);
+
     function initialize() public initializer {
-        __ERC20_init("LiberteTechTokenTest", "LBTV1TEST");
+        __ERC20_init("Liberte Coin", "LBTi");
         __Ownable_init(_msgSender());
     }
 
     function mint(uint256 _amount) public onlyOwner {
         _mint(_msgSender(), _amount * 10 ** decimals());
+    }
+
+    function addWhitelistedAddress(address account) public onlyOwner {
+        _whitelistedAddresses[account] = true;
+        emit WhitelistedAddressAdded(account);
+    }
+
+    function removeWhitelistedAddress(address account) public onlyOwner {
+        _whitelistedAddresses[account] = false;
+        emit WhitelistedAddressRemoved(account);
+    }
+
+    function isWhitelisted(address account) public view returns (bool) {
+        return _whitelistedAddresses[account];
+    }
+
+    function _transfer(
+        address from,
+        address to,
+        uint256 value
+    ) internal override {
+        require(
+            _whitelistedAddresses[from] || _whitelistedAddresses[to],
+            "ERC20: sender|receiver is not whitelisted"
+        );
+        super._transfer(from, to, value);
     }
 }

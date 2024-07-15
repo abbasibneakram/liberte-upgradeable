@@ -1,19 +1,14 @@
 // scripts/deploy.js
 async function main() {
-    const LiberteTechTokenTest = await ethers.getContractFactory(
-        'LiberteTechTokenTest'
-    )
-    console.log('Deploying LiberteTechTokenTest...')
+    const LiberteTechTokenTest = await ethers.getContractFactory('LiberteCoin')
+    console.log('Deploying Liberte Coin...')
     const liberteTechTokenTest = await upgrades.deployProxy(
         LiberteTechTokenTest,
         {
-            initializer: 'constructor',
+            initializer: 'initialize',
         }
     )
-    console.log(
-        'LiberteTechTokenTest deployed to:',
-        liberteTechTokenTest.target
-    )
+    console.log('Liberte Coin deployed to:', liberteTechTokenTest.target)
 }
 
 main()
