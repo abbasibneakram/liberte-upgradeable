@@ -473,7 +473,7 @@ contract LiberteCoin is Initializable, ERC20Upgradeable, OwnableUpgradeable {
     event WhitelistedAddressRemoved(address indexed account);
 
     function initialize() public initializer {
-        __ERC20_init("Liberte Coin", "LBTi");
+        __ERC20_init("Liberte Coin", "LBT");
         __Ownable_init(_msgSender());
     }
 
