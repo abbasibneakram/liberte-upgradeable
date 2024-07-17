@@ -7,4 +7,5 @@ Try running some of the following tasks:
 ```shell
 npx hardhat compile
 npx hardhat run .\scripts\deployLbtV1.js --network [Network Name]
+npx hardhat verify [Contract Address] --network [Network Name]
 ```
