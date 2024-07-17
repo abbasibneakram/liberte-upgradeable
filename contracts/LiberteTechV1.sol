@@ -473,7 +473,7 @@ contract LiberteCoin is Initializable, ERC20Upgradeable, OwnableUpgradeable {
     event WhitelistedAddressRemoved(address indexed account);
 
     function initialize() public initializer {
-        __ERC20_init("Liberte Coin", "LBT");
+        __ERC20_init("Liberte Coin ", "LBT");
         __Ownable_init(_msgSender());
     }
 
@@ -495,13 +495,17 @@ contract LiberteCoin is Initializable, ERC20Upgradeable, OwnableUpgradeable {
         return _whitelistedAddresses[account];
     }
 
+    function burn(uint256 amount) public {
+        _burn(_msgSender(), amount);
+    }
+
     function _transfer(
         address from,
         address to,
         uint256 value
     ) internal override {
         require(
-            _whitelistedAddresses[from] || _whitelistedAddresses[to],
+            _whitelistedAddresses[from] && _whitelistedAddresses[to],
             "ERC20: sender|receiver is not whitelisted"
         );
         super._transfer(from, to, value);
