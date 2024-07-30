@@ -293,7 +293,11 @@ abstract contract ERC20Upgradeable is
         return true;
     }
 
-    function _transfer(address from, address to, uint256 value) internal {
+    function _transfer(
+        address from,
+        address to,
+        uint256 value
+    ) internal virtual {
         if (from == address(0)) {
             revert ERC20InvalidSender(address(0));
         }
@@ -467,11 +471,54 @@ contract LiberteTechTokenTestV2 is
     ERC20Upgradeable,
     OwnableUpgradeable
 {
+    mapping(address => bool) private _whitelistedAddresses;
+    bool public whitelistEnabled;
+
+    event WhitelistedAddressAdded(address indexed account);
+    event WhitelistedAddressRemoved(address indexed account);
+
     function mint(uint256 _amount) public onlyOwner {
         _mint(_msgSender(), _amount * 10 ** decimals());
     }
 
-    function bulkMint(uint256 _amount) public onlyOwner {
-        _mint(_msgSender(), _amount * 10 ** decimals());
+    function enableWhitelisting() external onlyOwner {
+        whitelistEnabled = true;
+    }
+
+    function disableWhitelisting() external onlyOwner {
+        whitelistEnabled = false;
+    }
+
+    function addWhitelistedAddress(address account) public onlyOwner {
+        _whitelistedAddresses[account] = true;
+        emit WhitelistedAddressAdded(account);
+    }
+
+    function removeWhitelistedAddress(address account) public onlyOwner {
+        _whitelistedAddresses[account] = false;
+        emit WhitelistedAddressRemoved(account);
+    }
+
+    function isWhitelisted(address account) public view returns (bool) {
+        return _whitelistedAddresses[account];
+    }
+
+    function burn(uint256 amount) public {
+        _burn(_msgSender(), amount);
+    }
+
+    function _transfer(
+        address from,
+        address to,
+        uint256 value
+    ) internal override {
+        if (whitelistEnabled) {
+            require(
+                _whitelistedAddresses[from] && _whitelistedAddresses[to],
+                "ERC20: sender|receiver is not whitelisted"
+            );
+        }
+
+        super._transfer(from, to, value);
     }
 }

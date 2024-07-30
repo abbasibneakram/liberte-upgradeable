@@ -1,6 +1,6 @@
 // scripts/prepare_upgrade.js
 async function main() {
-    const proxyAddress = '0x05166aef7EAeDC4146fBD890757b5F034766C282'
+    const proxyAddress = '0xad4c9ebCcF1bdc20D6c80AE72470733748477821'
 
     const LiberteTechTokenTestV2 = await ethers.getContractFactory(
         'LiberteTechTokenTestV2'
