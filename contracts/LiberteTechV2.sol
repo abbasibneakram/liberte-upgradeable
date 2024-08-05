@@ -472,21 +472,12 @@ contract LiberteTechTokenTestV2 is
     OwnableUpgradeable
 {
     mapping(address => bool) private _whitelistedAddresses;
-    bool public whitelistEnabled;
 
     event WhitelistedAddressAdded(address indexed account);
     event WhitelistedAddressRemoved(address indexed account);
 
     function mint(uint256 _amount) public onlyOwner {
         _mint(_msgSender(), _amount * 10 ** decimals());
-    }
-
-    function enableWhitelisting() external onlyOwner {
-        whitelistEnabled = true;
-    }
-
-    function disableWhitelisting() external onlyOwner {
-        whitelistEnabled = false;
     }
 
     function addWhitelistedAddress(address account) public onlyOwner {
@@ -512,12 +503,10 @@ contract LiberteTechTokenTestV2 is
         address to,
         uint256 value
     ) internal override {
-        if (whitelistEnabled) {
-            require(
-                _whitelistedAddresses[from] && _whitelistedAddresses[to],
-                "ERC20: sender|receiver is not whitelisted"
-            );
-        }
+        require(
+            _whitelistedAddresses[from] && _whitelistedAddresses[to],
+            "ERC20: sender|receiver is not whitelisted"
+        );
 
         super._transfer(from, to, value);
     }

@@ -9,10 +9,6 @@ const ETHER_SCAN_KEY = process.env.ETHER_SCAN_KEY
 module.exports = {
     solidity: '0.8.20',
     networks: {
-        sepolia: {
-            url: process.env.SEPOLIA_RPC_URL,
-            accounts: [process.env.PRIVATE_KEY],
-        },
         mainnet: {
             url: process.env.MAINNET_RPC_URL,
             accounts: [process.env.PRIVATE_KEY],
@@ -24,7 +20,7 @@ module.exports = {
     },
     etherscan: {
         apiKey: {
-            sepolia: ETHER_SCAN_KEY,
+            mainnet: ETHER_SCAN_KEY,
             polygon: POLYGON_SCAN_KEY,
         },
     },

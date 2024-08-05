@@ -468,6 +468,7 @@ abstract contract OwnableUpgradeable is Initializable, ContextUpgradeable {
 
 contract LiberteCoin is Initializable, ERC20Upgradeable, OwnableUpgradeable {
     mapping(address => bool) private _whitelistedAddresses;
+    bool public whitelistEnabled;
 
     event WhitelistedAddressAdded(address indexed account);
     event WhitelistedAddressRemoved(address indexed account);
@@ -491,12 +492,20 @@ contract LiberteCoin is Initializable, ERC20Upgradeable, OwnableUpgradeable {
         emit WhitelistedAddressRemoved(account);
     }
 
+    function enableWhitelisting() external onlyOwner {
+        whitelistEnabled = true;
+    }
+
+    function disableWhitelisting() external onlyOwner {
+        whitelistEnabled = false;
+    }
+
     function isWhitelisted(address account) public view returns (bool) {
         return _whitelistedAddresses[account];
     }
 
     function burn(uint256 amount) public {
-        _burn(_msgSender(), amount);
+        _burn(_msgSender(), amount * 10 ** decimals());
     }
 
     function _transfer(
@@ -504,10 +513,13 @@ contract LiberteCoin is Initializable, ERC20Upgradeable, OwnableUpgradeable {
         address to,
         uint256 value
     ) internal override {
-        require(
-            _whitelistedAddresses[from] && _whitelistedAddresses[to],
-            "ERC20: sender|receiver is not whitelisted"
-        );
+        if (whitelistEnabled) {
+            require(
+                _whitelistedAddresses[from] && _whitelistedAddresses[to],
+                "ERC20: sender|receiver is not whitelisted"
+            );
+        }
+
         super._transfer(from, to, value);
     }
 }
